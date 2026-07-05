@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Проект "Комменты"</title>
@@ -83,13 +83,13 @@
       },
     ];
 
-    const nameInput = document.querySelector('.add-form-name');
-    const commentInput = document.querySelector('.add-form-text');
-    const addButton = document.querySelector('.add-form-button');
-    const commentsList = document.querySelector('.comments');
+    const nameInput = document.querySelector(".add-form-name");
+    const commentInput = document.querySelector(".add-form-text");
+    const addButton = document.querySelector(".add-form-button");
+    const commentsList = document.querySelector(".comments");
 
     function validateInputs() {
-      if (nameInput.value.trim() === '' || commentInput.value.trim() === '') {
+      if (nameInput.value.trim() === "" || commentInput.value.trim() === "") {
         addButton.disabled = true;
       } else {
         addButton.disabled = false;
@@ -97,8 +97,8 @@
     }
 
     validateInputs();
-    nameInput.addEventListener('input', validateInputs);
-    commentInput.addEventListener('input', validateInputs);
+    nameInput.addEventListener("input", validateInputs);
+    commentInput.addEventListener("input", validateInputs);
 
     function sanitize(text) {
       return text.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
@@ -106,20 +106,21 @@
 
     function getFormattedDate() {
       const date = new Date();
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
       const year = String(date.getFullYear()).slice(-2);
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
 
       return `${day}.${month}.${year} ${hours}:${minutes}`;
     }
 
     function initLikeListeners() {
-      const likeButtons = document.querySelectorAll('.like-button');
+      const likeButtons = document.querySelectorAll(".like-button");
 
       likeButtons.forEach((button) => {
-        button.addEventListener('click', () => {
+        button.addEventListener("click", (e) => {
+          e.stopPropagation();
           const index = button.dataset.index;
           const comment = comments[index];
 
@@ -140,7 +141,7 @@
       const commentsHtml = comments
         .map((comment, index) => {
           return `
-            <li class="comment">
+            <li class="comment" data-index="${index}">
               <div class="comment-header">
                 <div>${sanitize(comment.name)}</div>
                 <div>${comment.date}</div>
@@ -154,7 +155,7 @@
                 <div class="likes">
                   <span class="likes-counter">${comment.likes}</span>
                   <button 
-                    class="like-button ${comment.isLiked ? '-active-like' : ''}" 
+                    class="like-button ${comment.isLiked ? "-active-like" : ""}" 
                     data-index="${index}">
                   </button>
                 </div>
@@ -162,33 +163,56 @@
             </li>
           `;
         })
-        .join('');
+        .join("");
 
       commentsList.innerHTML = commentsHtml;
 
       initLikeListeners();
     }
 
-    addButton.addEventListener('click', function () {
-      if (nameInput.value.trim() === '' || commentInput.value.trim() === '') {
+    addButton.addEventListener("click", function () {
+      if (nameInput.value.trim() === "" || commentInput.value.trim() === "") {
         return;
       }
 
       comments.push({
-        name: nameInput.value,
+        name: nameInput.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
         date: getFormattedDate(),
-        text: commentInput.value,
+        text: commentInput.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
         likes: 0,
         isLiked: false,
       });
 
       renderComments();
 
-      nameInput.value = '';
-      commentInput.value = '';
+      nameInput.value = "";
+      commentInput.value = "";
       validateInputs();
     });
 
     renderComments();
+
+
+    // Домашка 3. 
+   commentsList.addEventListener('click', (e) => {
+  if (e.target.classList.contains('like-button')) {
+    return;
+  }
+
+  const commentElement = e.target.closest('.comment');
+  if (!commentElement) {
+    return;
+  }
+
+  const index = commentElement.dataset.index;
+  const name = comments[index].name;
+  const text = comments[index].text;
+
+  commentInput.value = `* ${name}\n* ${text}\n-`;
+
+  validateInputs();
+});
+
+
   </script>
 </html>
