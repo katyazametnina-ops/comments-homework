@@ -128,7 +128,6 @@ addButton.addEventListener('click', function () {
 
 renderComments()
 
-// Домашка 3.
 commentsList.addEventListener('click', (e) => {
     if (e.target.classList.contains('like-button')) {
         return
