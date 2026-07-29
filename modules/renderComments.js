@@ -1,6 +1,5 @@
 import { comments } from './comments.js'
 import { commentsList } from './elements.js'
-import { initLikeListeners } from './initLikeListeners.js'
 import { sanitize } from './sanitize.js'
 
 export function renderComments() {
@@ -32,6 +31,4 @@ export function renderComments() {
         .join('')
 
     commentsList.innerHTML = commentsHtml
-
-    initLikeListeners()
 }

@@ -1,24 +1,30 @@
 import { comments } from './comments.js'
+import { commentsList } from './elements.js'
 import { renderComments } from './renderComments.js'
 
 export function initLikeListeners() {
-    const likeButtons = document.querySelectorAll('.like-button')
+    commentsList.addEventListener('click', (e) => {
+        const likeButton = e.target.closest('.like-button')
 
-    likeButtons.forEach((button) => {
-        button.addEventListener('click', (e) => {
-            e.stopPropagation()
-            const index = button.dataset.index
-            const comment = comments[index]
+        if (!likeButton) {
+            return
+        }
 
-            if (comment.isLiked) {
-                comment.likes--
-                comment.isLiked = false
-            } else {
-                comment.likes++
-                comment.isLiked = true
-            }
+        const index = Number(likeButton.dataset.index)
+        const comment = comments[index]
 
-            renderComments()
-        })
+        if (!comment) {
+            return
+        }
+
+        if (comment.isLiked) {
+            comment.likes--
+            comment.isLiked = false
+        } else {
+            comment.likes++
+            comment.isLiked = true
+        }
+
+        renderComments()
     })
 }
