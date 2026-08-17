@@ -1,3 +1,5 @@
+import { setComments } from './comments.js'
+import { getComments } from './api.js'
 import { renderComments } from './renderComments.js'
 import { initFormValidation } from './initFormValidation.js'
 import { initAddCommentListener } from './initAddCommentListener.js'
@@ -9,5 +11,9 @@ export function initApp() {
     initAddCommentListener()
     initLikeListeners()
     initReplyListener()
-    renderComments()
+    // renderComments()
+    getComments().then((apiComments) => {
+        setComments(apiComments)
+        renderComments()
+    })
 }
