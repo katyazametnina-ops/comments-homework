@@ -1,19 +1,16 @@
-import { setComments } from './comments.js'
-import { getComments } from './api.js'
-import { renderComments } from './renderComments.js'
 import { initFormValidation } from './initFormValidation.js'
 import { initAddCommentListener } from './initAddCommentListener.js'
 import { initLikeListeners } from './initLikeListeners.js'
 import { initReplyListener } from './initReplyListener.js'
+import { commentsList } from './elements.js'
+import { loadComments } from './loadComments.js'
 
 export function initApp() {
     initFormValidation()
     initAddCommentListener()
     initLikeListeners()
     initReplyListener()
-    // renderComments()
-    getComments().then((apiComments) => {
-        setComments(apiComments)
-        renderComments()
-    })
+    commentsList.innerHTML =
+        '<p>Пожалуйста, подождите, загружаю комментарии...</p>'
+    loadComments()
 }
