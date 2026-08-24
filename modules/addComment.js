@@ -1,6 +1,7 @@
-import { comments } from './comments.js'
+import { getComments } from './api.js'
+import { postComment } from './api.js'
+import { setComments } from './comments.js'
 import { nameInput, commentInput } from './elements.js'
-import { getFormattedDate } from './FormattedDate.js'
 import { renderComments } from './renderComments.js'
 import { validateInputs } from './validateInputs.js'
 
@@ -9,18 +10,15 @@ export function addComment() {
         return
     }
 
-    comments.push({
-        name: nameInput.value,
-        date: getFormattedDate(),
-        text: commentInput.value,
-        likes: 0,
-        isLiked: false,
-    })
-
-    renderComments()
-
-    nameInput.value = ''
-    commentInput.value = ''
-
-    validateInputs()
+    postComment(nameInput.value, commentInput.value)
+        .then(() => {
+            return getComments()
+        })
+        .then((apiComments) => {
+            setComments(apiComments)
+            renderComments()
+            nameInput.value = ''
+            commentInput.value = ''
+            validateInputs()
+        })
 }
