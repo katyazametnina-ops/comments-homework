@@ -14,7 +14,7 @@ export function addComment() {
             return loadComments()
         })
         .then((apiComments) => {
-            addForm.style.display = 'block'
+            addForm.style.display = ''
             addLoader.style.display = 'none'
             nameInput.value = ''
             commentInput.value = ''
