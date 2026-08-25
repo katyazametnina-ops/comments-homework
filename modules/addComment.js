@@ -1,22 +1,21 @@
-import { getComments } from './api.js'
 import { postComment } from './api.js'
-import { setComments } from './comments.js'
-import { nameInput, commentInput } from './elements.js'
-import { renderComments } from './renderComments.js'
+import { nameInput, commentInput, addForm, addLoader } from './elements.js'
 import { validateInputs } from './validateInputs.js'
+import { loadComments } from './loadComments.js'
 
 export function addComment() {
     if (nameInput.value.trim() === '' || commentInput.value.trim() === '') {
         return
     }
-
+    addForm.style.display = 'none'
+    addLoader.style.display = 'block'
     postComment(nameInput.value, commentInput.value)
         .then(() => {
-            return getComments()
+            return loadComments()
         })
         .then((apiComments) => {
-            setComments(apiComments)
-            renderComments()
+            addForm.style.display = ''
+            addLoader.style.display = 'none'
             nameInput.value = ''
             commentInput.value = ''
             validateInputs()
