@@ -1,25 +1,24 @@
 import { postComment } from './api.js'
-import { nameInput, commentInput, addForm, addLoader } from './elements.js'
-import { validateInputs } from './validateInputs.js'
 import { loadComments } from './loadComments.js'
 
 export function addComment() {
+    const nameInput = document.querySelector('.add-form-name')
+    const commentInput = document.querySelector('.add-form-text')
+    const addForm = document.querySelector('.add-form')
+    const addLoader = document.querySelector('.add-loader')
+
     if (nameInput.value.trim() === '' || commentInput.value.trim() === '') {
         return
     }
+
     addForm.style.display = 'none'
     addLoader.style.display = 'block'
+
     postComment(nameInput.value, commentInput.value)
         .then(() => {
             return loadComments()
         })
-        .then((apiComments) => {
-            addForm.style.display = ''
-            addLoader.style.display = 'none'
-            nameInput.value = ''
-            commentInput.value = ''
-            validateInputs()
-        })
+        .then(() => {})
         .catch((error) => {
             addForm.style.display = ''
             addLoader.style.display = 'none'

@@ -1,21 +1,17 @@
 import { comments } from './comments.js'
-import { commentsList } from './elements.js'
 import { renderComments } from './renderComments.js'
 
 export function initLikeListeners() {
+    const commentsList = document.querySelector('.comments')
+    if (!commentsList) return
     commentsList.addEventListener('click', (e) => {
         const likeButton = e.target.closest('.like-button')
-
-        if (!likeButton) {
-            return
-        }
+        if (!likeButton) return
 
         const index = Number(likeButton.dataset.index)
         const comment = comments[index]
 
-        if (!comment) {
-            return
-        }
+        if (!comment) return
 
         if (comment.isLiked) {
             comment.likes--
