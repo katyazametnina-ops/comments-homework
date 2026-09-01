@@ -5,7 +5,12 @@ export function getComments() {
         'https://wedev-api.sky.pro/api/v1/katya_zametnina/comments',
         {},
     )
-        .then((response) => response.json())
+        .then((response) => {
+            if (response.status === 500) {
+                throw new Error('Сервер сломался')
+            }
+            return response.json()
+        })
         .then((data) => {
             const appComments = data.comments.map((comment) => {
                 return {
@@ -29,5 +34,13 @@ export function postComment(name, text) {
             name: name,
             text: text,
         }),
-    }).then((response) => response.json())
+    }).then((response) => {
+        if (response.status === 400) {
+            throw new Error('Короткое имя')
+        }
+        if (response.status === 500) {
+            throw new Error('Сервер сломался')
+        }
+        return response.json()
+    })
 }

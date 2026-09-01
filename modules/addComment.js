@@ -20,4 +20,15 @@ export function addComment() {
             commentInput.value = ''
             validateInputs()
         })
+        .catch((error) => {
+            addForm.style.display = ''
+            addLoader.style.display = 'none'
+            if (error.message === 'Короткое имя') {
+                alert('Имя и комментарий должны быть не короче 3 символов')
+            } else if (error.message === 'Сервер сломался') {
+                alert('Сервер сломался, попробуй позже')
+            } else {
+                alert('Кажется, у вас сломался интернет, попробуйте позже')
+            }
+        })
 }
